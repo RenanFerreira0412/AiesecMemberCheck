@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "344212920689",
+    "project_id": "aiesecmembercheck",
+    "storage_bucket": "aiesecmembercheck.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:344212920689:android:82a60fb84d6b6192b17ed0",
+        "android_client_info": {
+          "package_name": "com.example.aiesecmembercheck"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChVBaeDvPXyvCRSNU4_pV9TyEj1QjZC0U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
