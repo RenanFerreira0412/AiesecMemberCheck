@@ -35,7 +35,7 @@ class LoginForm extends StatelessWidget {
             label: 'Senha',
             hint: 'Digite sua senha',
             obscureText: true,
-            validator: FieldValidator.validatePassword,
+            validator: (value) => FieldValidator.validatePassword(value),
             keyboardType: TextInputType.text,
           ),
           TextButton(
