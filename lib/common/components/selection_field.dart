@@ -20,6 +20,7 @@ class SelectionField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: DropdownButtonFormField<String>(
+        isExpanded: true,
         value: controller.text.isEmpty
             ? null
             : controller.text, // Definindo o valor inicial

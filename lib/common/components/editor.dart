@@ -7,6 +7,7 @@ class Editor extends StatefulWidget {
   final String hint;
   final String? Function(String?)? validator;
   final bool obscureText;
+  final bool readOnly;
   final TextInputType keyboardType;
   final int? maxLines;
   final String? mask; // Tornando o campo mask opcional
@@ -19,8 +20,9 @@ class Editor extends StatefulWidget {
     this.validator,
     required this.obscureText,
     required this.keyboardType,
-    this.maxLines = 1, // Valor padrão para maxLines
-    this.mask, // Máscara opcional
+    this.maxLines = 1,
+    this.mask,
+    this.readOnly = false,
   });
 
   @override
@@ -66,6 +68,7 @@ class EditorState extends State<Editor> {
         ),
         validator: widget.validator,
         obscureText: _isObscure,
+        readOnly: widget.readOnly,
         keyboardType: widget.keyboardType,
         maxLines: widget.maxLines,
         inputFormatters: maskFormatter != null

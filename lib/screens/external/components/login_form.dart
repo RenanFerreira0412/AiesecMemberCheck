@@ -27,7 +27,7 @@ class LoginForm extends StatelessWidget {
             label: 'E-mail',
             hint: 'Digite seu e-mail',
             obscureText: false,
-            validator: (value) => FieldValidator.validateEmail(value),
+            validator: (value) => FieldValidator.validateAiesecEmail(value),
             keyboardType: TextInputType.emailAddress,
           ),
           Editor(

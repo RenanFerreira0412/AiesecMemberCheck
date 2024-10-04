@@ -1,14 +1,31 @@
 class FieldValidator {
   // Valida se o campo está vazio
   static String? validateRequired(String? value, String fieldName) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return '$fieldName é obrigatório.';
     }
     return null;
   }
 
-  // Valida se o valor inserido é um e-mail válido com domínio específico
+  // Valida se o valor inserido é um e-mail válido
   static String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'E-mail é obrigatório.';
+    }
+
+    // Expressão regular básica para validar o formato do e-mail
+    final emailRegex =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+
+    if (!emailRegex.hasMatch(value)) {
+      return 'Por favor, insira um e-mail válido.';
+    }
+
+    return null;
+  }
+
+  // Valida se o valor inserido é um e-mail válido com domínio específico
+  static String? validateAiesecEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'E-mail é obrigatório.';
     }

@@ -19,7 +19,7 @@ class ForgotPasswordForm extends StatelessWidget {
             controller: emailController,
             label: 'E-mail',
             hint: 'Digite seu e-mail',
-            validator: (value) => FieldValidator.validateEmail(value),
+            validator: (value) => FieldValidator.validateAiesecEmail(value),
             obscureText: false,
             keyboardType: TextInputType.emailAddress,
           ),

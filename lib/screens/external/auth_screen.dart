@@ -81,112 +81,118 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            constraints: const BoxConstraints(maxWidth: 600),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  spreadRadius: 1,
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  title,
-                  textAlign: TextAlign.center,
-                ),
-                Utils.addVerticalSpace(16.0),
-
-                // Botão para alternar entre Login e Cadastro
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      isLogin =
-                          !isLogin; // Alterna entre as telas de login e cadastro
-                      isForgotPassword = false; // Reseta a tela de recuperação
-                      formKey.currentState
-                          ?.reset(); // Reinicia a validação do formulário
-                      _setAuthText(); // Atualiza os textos
-                    });
-                  },
-                  child: Text(
-                    toggleButton,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              constraints: const BoxConstraints(maxWidth: 600),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    title,
                     textAlign: TextAlign.center,
                   ),
-                ),
-                Utils.addVerticalSpace(20.0),
+                  Utils.addVerticalSpace(16.0),
 
-                // Exibe o formulário de acordo com a tela selecionada
-                if (isLogin && !isForgotPassword) ...[
-                  // Formulário de Login
-                  LoginForm(
-                    emailController: emailController,
-                    passwordController: passwordController,
-                    formKey: formKey,
-                    onForgotPassword: () {
+                  // Botão para alternar entre Login e Cadastro
+                  TextButton(
+                    onPressed: () {
                       setState(() {
+                        isLogin =
+                            !isLogin; // Alterna entre as telas de login e cadastro
                         isForgotPassword =
-                            true; // Altera para a tela de recuperação
-                        isLogin = false; // Reseta a tela de login
+                            false; // Reseta a tela de recuperação
+                        formKey.currentState
+                            ?.reset(); // Reinicia a validação do formulário
                         _setAuthText(); // Atualiza os textos
                       });
                     },
+                    child: Text(
+                      toggleButton,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                ] else if (!isLogin && !isForgotPassword) ...[
-                  // Formulário de Registro
-                  RegisterForm(
-                    nameController: nameController,
-                    cpfController: cpfController,
-                    emailController: emailController,
-                    passwordController: passwordController,
-                    confirmPasswordController: confirmPasswordController,
-                    committeeController: committeeController,
-                    formKey: formKey,
-                  ),
-                ] else ...[
-                  // Formulário de Recuperação de Senha
-                  ForgotPasswordForm(
-                    emailController: emailController,
-                    formKey: formKey,
+                  Utils.addVerticalSpace(20.0),
+
+                  // Exibe o formulário de acordo com a tela selecionada
+                  if (isLogin && !isForgotPassword) ...[
+                    // Formulário de Login
+                    LoginForm(
+                      emailController: emailController,
+                      passwordController: passwordController,
+                      formKey: formKey,
+                      onForgotPassword: () {
+                        setState(() {
+                          isForgotPassword =
+                              true; // Altera para a tela de recuperação
+                          isLogin = false; // Reseta a tela de login
+                          formKey.currentState
+                              ?.reset(); // Reinicia a validação do formulário
+                          _setAuthText(); // Atualiza os textos
+                        });
+                      },
+                    ),
+                  ] else if (!isLogin && !isForgotPassword) ...[
+                    // Formulário de Registro
+                    RegisterForm(
+                      nameController: nameController,
+                      cpfController: cpfController,
+                      emailController: emailController,
+                      passwordController: passwordController,
+                      confirmPasswordController: confirmPasswordController,
+                      committeeController: committeeController,
+                      formKey: formKey,
+                    ),
+                  ] else ...[
+                    // Formulário de Recuperação de Senha
+                    ForgotPasswordForm(
+                      emailController: emailController,
+                      formKey: formKey,
+                    ),
+                  ],
+                  Utils.addVerticalSpace(15.0),
+
+                  PrimaryButton(
+                    label: actionButtonTitle,
+                    onPressed: () async {
+                      if (formKey.currentState!.validate()) {
+                        // Processar o formulário
+                        if (isLogin) {
+                          await _handleLogin(emailController.text.trim(),
+                              passwordController.text.trim());
+                        } else if (isForgotPassword) {
+                          await _handlePasswordReset(
+                              emailController.text.trim());
+                        } else {
+                          await _handleRegistration(
+                            nameController.text.trim(),
+                            cpfController.text.trim(),
+                            emailController.text.trim(),
+                            passwordController.text.trim(),
+                            committeeController.text.trim(),
+                          );
+                        }
+                      }
+                    },
                   ),
                 ],
-                Utils.addVerticalSpace(15.0),
-
-                PrimaryButton(
-                  label: actionButtonTitle,
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      // Processar o formulário
-                      if (isLogin) {
-                        await _handleLogin(emailController.text.trim(),
-                            passwordController.text.trim());
-                      } else if (isForgotPassword) {
-                        await _handlePasswordReset(emailController.text.trim());
-                      } else {
-                        await _handleRegistration(
-                          nameController.text.trim(),
-                          cpfController.text.trim(),
-                          emailController.text.trim(),
-                          passwordController.text.trim(),
-                          committeeController.text.trim(),
-                        );
-                      }
-                    }
-                  },
-                ),
-              ],
+              ),
             ),
           ),
         ),

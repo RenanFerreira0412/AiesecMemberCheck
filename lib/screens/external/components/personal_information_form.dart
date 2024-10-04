@@ -110,45 +110,35 @@ class PersonalInformationForm extends StatelessWidget {
     const double spacing = 16.0;
     final fields = _buildFormFields();
 
-    if (isDesktop) {
-      List<Widget> rows = [];
-
-      // Organiza os campos em pares para layout desktop
-      for (var i = 0; i < fields.length; i += 2) {
-        if (i + 1 < fields.length) {
-          rows.add(
-            Row(
-              children: [
-                Expanded(child: fields[i]),
-                Utils.addHorizontalSpace(spacing),
-                Expanded(child: fields[i + 1]),
-              ],
-            ),
-          );
-        } else {
-          // O último campo ocupa toda a largura se for ímpar
-          rows.add(Expanded(child: fields[i]));
-        }
-      }
-
-      return Form(
+    return SingleChildScrollView(
+      child: Form(
         key: formKey,
-        child: Column(
-          children: rows,
-        ),
-      );
-    }
-
-    // Layout mobile: Coloca todos os campos em uma coluna
-    return Form(
-      key: formKey,
-      child: Column(
-        children: fields.map((field) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: spacing),
-            child: field,
-          );
-        }).toList(),
+        child: isDesktop
+            ? Column(
+                children: [
+                  for (int i = 0; i < fields.length; i += 2)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: spacing),
+                      child: Row(
+                        children: [
+                          Expanded(child: fields[i]),
+                          if (i + 1 < fields.length) ...[
+                            Utils.addHorizontalSpace(spacing),
+                            Expanded(child: fields[i + 1]),
+                          ],
+                        ],
+                      ),
+                    ),
+                ],
+              )
+            : Column(
+                children: fields
+                    .map((field) => Padding(
+                          padding: const EdgeInsets.only(bottom: spacing),
+                          child: field,
+                        ))
+                    .toList(),
+              ),
       ),
     );
   }
